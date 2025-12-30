@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    padding: 8% 6%;
+}
+
+/* .sora-<uniquifier> {
+  font-family: "Sora", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+div h1{
+    text-align: center;
+    font-size: 60px;
+    font-family: "Sora", sans-serif;
+}
+button{
+    font-size: 1.2em;
+    background-color: rgb(34, 255, 34);
+    color: aliceblue;
+    font-weight: 700;
+    border: none;
+    padding:12px 24px;
+
+}
+p{
+    font-family: "Sora", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: green;
+}
