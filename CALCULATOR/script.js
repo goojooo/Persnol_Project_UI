@@ -1,9 +1,30 @@
-const one = document.getElementById("one").onclick = function() {
-  const box = document.getElementById("inputBox"); // element, not its .value
-  box.value += '1'; // append '1' (or use `box.value = '1'` to replace)
+let one;
+document.getElementById("one").onclick = function () {
+  one = Number(document.getElementById("inputBox").value);
+  document.getElementById("inputBox").value = one;
+};
+let two;
+document.getElementById("two").onclick = function () {
+  two = Number(document.getElementById("inputBox").value);
+  document.getElementById("inputBox").value = two;
 };
 
-const two = document.getElementById("two").onclick = function() {
-    const box = document.getElementById("inputBox");
-    box.value += '2';
-}
+// const two = (document.getElementById("two").onclick = function () {
+//   const box = document.getElementById("inputBox");
+//   box.value += "2";
+// });
+
+// let num;
+// document.getElementById("sub").onclick = function(){
+// num = document.getElementById("myText").value;
+// if(num == 0){
+//     document.getElementById("h1").textContent = `The given number is :  ${num} and its Zero...`
+// }
+// else if(num % 2 == 0){
+//     document.getElementById("h1").textContent = `The given number is :  ${num} and its EVEN...`
+// }
+// else{
+//     document.getElementById("h1").textContent = `The given number is :  ${num} and its ODD...`
+// }
+// // console.log(userName);
+// }
