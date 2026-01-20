@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Login – Fish Animation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="container">
+
+<!-- ================= SHADOW ================= -->
+<div class="fish-shadow-con">
+<svg class="fish-shadow" viewBox="0 0 743 645" aria-hidden="true">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 18 -7" result="goo"/>
+      <feBlend in="SourceGraphic" in2="goo"/>
+    </filter>
+  </defs>
+
+  <path id="fishPathShadow"
+    d="M177.367 337.568L182.709 357.739C198.517 417.421
+       249.748 460.995 311.193 467.019L421.508 477.834
+       C478.237 483.396 532.831 454.649 560.346 404.729
+       C607.09 319.923 557.549 214.182 462.47 195.822
+       L375.079 178.946C251.651 136.837 149.205 231.245
+       177.367 337.568Z"
+    fill="none"/>
+
+  <g fill="#211922" filter="url(#goo)">
+    <!-- same 6 parts as main fish -->
+    <use href="#l1"/><use href="#l2"/><use href="#l3"/>
+    <use href="#l4"/><use href="#l5"/><use href="#l6"/>
+  </g>
+</svg>
+</div>
+
+<!-- ================= FISH ================= -->
+<svg class="fish" viewBox="0 0 743 645" aria-hidden="true">
+  <path id="fishPath"
+    d="M177.367 337.568L182.709 357.739C198.517 417.421
+       249.748 460.995 311.193 467.019L421.508 477.834
+       C478.237 483.396 532.831 454.649 560.346 404.729
+       C607.09 319.923 557.549 214.182 462.47 195.822
+       L375.079 178.946C251.651 136.837 149.205 231.245
+       177.367 337.568Z"
+    fill="none"/>
+
+  <!-- l-1 -->
+  <g id="l1" fill="#F2AFAF">
+    <path d="M14.17 27.5c5.8 0 10.5-4.7 10.5-10.5
+             0-1.2 3.5-14.9 3.2-16
+             C26.4-3.1 18.8 6.5 14.17 6.5
+             9.87 6.5 1.67-2.7.05 1
+             -.5 2.3 3.67 15.5 3.67 17
+             3.67 22.8 8.37 27.5 14.17 27.5z"/>
+    <animateMotion dur="6s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#fishPath"/>
+    </animateMotion>
+  </g>
+
+  <!-- l-2 -->
+  <g id="l2" fill="#ff5050">
+    <path d="M36.5 0c9.1 0 16.5 10.7 16.5 24S45.6 48 36.5 48
+             20 37.3 20 24 27.4 0 36.5 0z"/>
+    <animateMotion dur="6s" begin=".1s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#fishPath"/>
+    </animateMotion>
+  </g>
+
+  <!-- l-3 -->
+  <g id="l3" fill="#D8D8D8">
+    <path d="M14.17 48c5.2 0 9.7-6.2 11.6-15
+             .6-2.8 3.1-.9 3.1-4
+             0-13.3-7.8-29-14.7-29
+             -6.9 0-14.2 13.7-14.2 27
+             0 3 2 2.8 2.5 5.5
+             1.8 9 6.4 15.5 11.7 15.5z"/>
+    <animateMotion dur="6s" begin=".2s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#fishPath"/>
+    </animateMotion>
+  </g>
+
+  <!-- l-4 -->
+  <g id="l4" fill="#D8D8D8">
+    <path d="M12.3 48c4.5 0 8.4-6.2 10-15
+             .5-2.8 2.7-.9 2.7-4
+             0-13.3-6.7-29-12.7-29
+             -6 0-12.3 13.7-12.3 27
+             0 3 1.7 2.8 2.1 5.5
+             1.5 9 5.4 15.5 10.2 15.5z"/>
+    <animateMotion dur="6s" begin=".3s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#fishPath"/>
+    </animateMotion>
+  </g>
+
+  <!-- l-5 -->
+  <g id="l5" fill="#D8D8D8">
+    <path d="M9.3 48c3.5 0 6.4-6.2 7.7-15
+             .4-2.8 2-.9 2-4
+             0-13.3-5.1-29-9.7-29
+             -4.6 0-9.7 13.7-9.7 27
+             0 3 1.3 2.8 1.6 5.5
+             1.2 9 4.2 15.5 8.1 15.5z"/>
+    <animateMotion dur="6s" begin=".4s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#fishPath"/>
+    </animateMotion>
+  </g>
+
+  <!-- l-6 -->
+  <g id="l6" fill="#D8D8D8">
+    <path d="M23.6 37.7c3.7 0 13.3-7.2 13.3-16.8
+             0-2.3 4.3-15.4 4-17.4
+             -1-6.4-8.4-3.6-11.6 3
+             -2.5 5.3-5.7 4.7-5.7 14.4
+             0 9.6-3.7 16.8 0 16.8z"/>
+    <animateMotion dur="6s" begin=".5s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#fishPath"/>
+    </animateMotion>
+  </g>
+
+</svg>
+
+<!-- ================= CARD ================= -->
+<div class="card">
+  <h1 class="card_title">Login to your account</h1>
+  <p class="card_title-info">Pen by Anna Batura</p>
+
+  <form>
+    <div class="input">
+      <input class="input_field" type="text" required />
+      <label class="input_label">Full name</label>
+    </div>
+
+    <div class="input">
+      <input class="input_field" type="email" required />
+      <label class="input_label">Email</label>
+    </div>
+
+    <div class="input">
+      <input class="input_field" type="password" id="password" required />
+      <label class="input_label">Password</label>
+      <span class="input_eye" id="togglePassword">👁️</span>
+    </div>
+
+    <button class="card_button">Get started</button>
+  </form>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

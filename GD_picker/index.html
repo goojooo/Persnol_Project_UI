@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GD Topic Picker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            pulseSlow: "pulse 3s infinite",
+            spinSlow: "spin 2s linear infinite"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-600 flex items-center justify-center p-4">
+
+  <div class="bg-white/20 backdrop-blur-xl shadow-2xl rounded-3xl p-8 max-w-xl w-full text-white">
+    
+    <!-- Title -->
+    <h1 class="text-3xl md:text-4xl font-bold text-center mb-2">
+      🎤 GD Topic Picker
+    </h1>
+    <p class="text-center text-white/80 mb-6">
+      Random Group Discussion Topic Generator
+    </p>
+
+    <!-- Topic Display -->
+    <div id="topicBox" class="min-h-[100px] flex items-center justify-center text-center text-xl font-semibold bg-white/20 rounded-2xl mb-6 p-4 transition-all duration-500">
+      Click below to generate a topic
+    </div>
+
+    <!-- Category Select -->
+    <select id="category" class="w-full mb-4 p-3 rounded-xl bg-white/30 text-white focus:outline-none">
+      <option value="all">All Categories</option>
+      <option value="tech">Technology</option>
+      <option value="social">Social Issues</option>
+      <option value="business">Business</option>
+      <option value="fun">Fun & Creative</option>
+    </select>
+
+    <!-- Buttons -->
+    <div class="flex gap-4 mb-6">
+      <button onclick="pickTopic()" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-all">
+        🎲 Pick Topic
+      </button>
+      <button onclick="resetTopic()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition-all">
+        🔄 Reset
+      </button>
+    </div>
+
+    <!-- Add Custom Topic -->
+    <div class="bg-white/10 p-4 rounded-2xl">
+      <h2 class="text-lg font-semibold mb-2">➕ Add Custom Topic</h2>
+      <input id="customTopic" type="text" placeholder="Enter your topic..."
+        class="w-full p-3 mb-3 rounded-xl bg-white/30 text-white focus:outline-none">
+      <button onclick="addTopic()" class="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded-xl font-semibold">
+        Add Topic
+      </button>
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const topics = {
+      tech: [
+        "AI replacing human jobs",
+        "Future of remote work",
+        "Cybersecurity threats",
+        "Is social media harmful?",
+        "5G technology impact"
+      ],
+      social: [
+        "Climate change responsibility",
+        "Gender equality",
+        "Education system reforms",
+        "Mental health awareness",
+        "Social media addiction"
+      ],
+      business: [
+        "Startups vs corporate jobs",
+        "Work-life balance",
+        "Is MBA still relevant?",
+        "Future of entrepreneurship",
+        "Gig economy growth"
+      ],
+      fun: [
+        "Would you time travel?",
+        "Books vs movies",
+        "Is luck more important than hard work?",
+        "Introverts vs extroverts",
+        "College life vs school life"
+      ]
+    };
+
+    let customTopics = [];
+
+    function pickTopic() {
+      const box = document.getElementById("topicBox");
+      const category = document.getElementById("category").value;
+
+      box.classList.add("animate-pulse");
+      box.innerHTML = "🎰 Picking a topic...";
+
+      setTimeout(() => {
+        let selectedTopics = [];
+
+        if (category === "all") {
+          Object.values(topics).forEach(arr => selectedTopics.push(...arr));
+        } else {
+          selectedTopics = [...topics[category]];
+        }
+
+        selectedTopics.push(...customTopics);
+
+        const randomTopic = selectedTopics[Math.floor(Math.random() * selectedTopics.length)];
+
+        box.classList.remove("animate-pulse");
+        box.innerHTML = `💡 ${randomTopic}`;
+      }, 1200);
+    }
+
+    function resetTopic() {
+      document.getElementById("topicBox").innerHTML = "Click below to generate a topic";
+    }
+
+    function addTopic() {
+      const input = document.getElementById("customTopic");
+      if (input.value.trim() !== "") {
+        customTopics.push(input.value.trim());
+        input.value = "";
+        alert("Topic added successfully!");
+      }
+    }
+  </script>
+
+</body>
+</html>
