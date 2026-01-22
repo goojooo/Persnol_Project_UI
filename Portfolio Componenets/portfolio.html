@@ -304,6 +304,17 @@ nav ul li:hover::after{ width:100%; }
 }
 
 /* =========================
+   FOOTER
+========================= */
+footer{
+  padding:40px 20px;
+  background:var(--panel);
+  text-align:center;
+  box-shadow:0 -5px 30px var(--shadow);
+  color:var(--muted);
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width:768px){
@@ -408,6 +419,11 @@ nav ul li:hover::after{ width:100%; }
   </form>
 </section>
 
+<!-- FOOTER -->
+<footer>
+  &copy; 2026 Alex. All Rights Reserved.
+</footer>
+
 <script>
 // ================= Scroll Indicator
 const scrollIndicator = document.getElementById("scrollIndicator");
@@ -509,9 +525,9 @@ class HeroParticle{
     if(this.x<0||this.x>heroCanvas.width||this.y<0||this.y>heroCanvas.height) this.reset();
   }
   reset(){ this.x=Math.random()*heroCanvas.width; this.y=Math.random()*heroCanvas.height; }
-  draw(){ heroCtx.beginPath(); heroCtx.arc(this.x,this.y,this.size,0,Math.PI*2); heroCtx.fillStyle="rgba(0,208,255,0.4)"; heroCtx.fill(); }
+  draw(){ heroCtx.beginPath(); heroCtx.arc(this.x,this.y,this.size,0,Math.PI*2); heroCtx.fillStyle="rgba(0,208,255,0.2)"; heroCtx.fill(); }
 }
-for(let i=0;i<80;i++) heroParticles.push(new HeroParticle());
+for(let i=0;i<100;i++) heroParticles.push(new HeroParticle());
 function animateHero(){ heroCtx.clearRect(0,0,heroCanvas.width,heroCanvas.height); heroParticles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateHero); }
 animateHero();
 
