@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Counters</title>
+
+<style>
+:root {
+  --bg: #050509;
+  --panel: #12121a;
+  --accent: #7c7cff;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.65);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   SECTION
+========================= */
+.stats-section {
+  padding: clamp(80px, 12vw, 140px) 20px;
+}
+
+.stats-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 80px;
+}
+
+.stats-header h2 {
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+}
+
+.stats-header p {
+  margin-top: 20px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* =========================
+   GRID
+========================= */
+.stats-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+}
+
+/* =========================
+   CARD
+========================= */
+.stat {
+  background: var(--panel);
+  padding: 40px 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 18px;
+}
+
+.number {
+  font-size: clamp(2.6rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.label {
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.stat small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<section class="stats-section" id="stats">
+  <div class="stats-header">
+    <h2>By the Numbers</h2>
+    <p>
+      A quick overview of my experience, projects, and impact so far.
+    </p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat" data-target="50">
+      <div class="icon">🚀</div>
+      <div class="number">0</div>
+      <div class="label">Projects Completed</div>
+      <small>Production-ready builds</small>
+    </div>
+
+    <div class="stat" data-target="4">
+      <div class="icon">💼</div>
+      <div class="number">0</div>
+      <div class="label">Years Experience</div>
+      <small>Professional work</small>
+    </div>
+
+    <div class="stat" data-target="30">
+      <div class="icon">🤝</div>
+      <div class="number">0</div>
+      <div class="label">Happy Clients</div>
+      <small>Worldwide</small>
+    </div>
+
+    <div class="stat" data-target="1200">
+      <div class="icon">⏱️</div>
+      <div class="number">0</div>
+      <div class="label">Hours of Coding</div>
+      <small>And counting</small>
+    </div>
+  </div>
+</section>
+
+<script>
+/* =========================
+   COUNT-UP ANIMATION
+========================= */
+const statsSection = document.getElementById("stats");
+const stats = document.querySelectorAll(".stat");
+let animated = false;
+
+function animateCounters() {
+  stats.forEach(stat => {
+    const target = +stat.dataset.target;
+    const numberEl = stat.querySelector(".number");
+    let start = 0;
+    const duration = 1500;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const value = Math.floor(progress * target);
+
+      numberEl.textContent = value;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        numberEl.textContent = target;
+      }
+    }
+
+    requestAnimationFrame(update);
+  });
+}
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !animated) {
+        animateCounters();
+        animated = true;
+      }
+    });
+  },
+  { threshold: 0.4 }
+);
+
+observer.observe(statsSection);
+</script>
+
+</body>
+</html>
