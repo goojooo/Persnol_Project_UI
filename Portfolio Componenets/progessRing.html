@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills Progress Rings</title>
+
+<style>
+:root {
+  --bg: #050509;
+  --panel: #12121a;
+  --accent: #7c7cff;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   SECTION
+========================= */
+.skills-section {
+  padding: clamp(80px, 12vw, 140px) 20px;
+}
+
+.skills-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 80px;
+}
+
+.skills-header h2 {
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+}
+
+.skills-header p {
+  margin-top: 20px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* =========================
+   GRID
+========================= */
+.skills-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 50px;
+}
+
+/* =========================
+   SKILL CARD
+========================= */
+.skill {
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 30px 20px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+}
+
+/* =========================
+   RING
+========================= */
+.ring {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+svg {
+  transform: rotate(-90deg);
+}
+
+circle {
+  fill: none;
+  stroke-width: 10;
+}
+
+.bg {
+  stroke: rgba(255,255,255,0.1);
+}
+
+.progress {
+  stroke: var(--accent);
+  stroke-dasharray: 0 999;
+  transition: stroke-dasharray 1.2s ease;
+  filter: drop-shadow(0 0 6px rgba(124,124,255,0.6));
+}
+
+/* =========================
+   CENTER TEXT
+========================= */
+.percentage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* =========================
+   LABEL
+========================= */
+.skill-name {
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.skill small {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+</style>
+</head>
+
+<body>
+
+<section class="skills-section" id="skills">
+  <div class="skills-header">
+    <h2>Skills & Expertise</h2>
+    <p>
+      A snapshot of the technologies and tools I use to build high-quality
+      digital experiences.
+    </p>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill" data-progress="90">
+      <div class="ring">
+        <svg width="140" height="140">
+          <circle class="bg" cx="70" cy="70" r="60" />
+          <circle class="progress" cx="70" cy="70" r="60" />
+        </svg>
+        <div class="percentage">0%</div>
+      </div>
+      <div class="skill-name">HTML & CSS</div>
+      <small>Semantic, responsive</small>
+    </div>
+
+    <div class="skill" data-progress="85">
+      <div class="ring">
+        <svg width="140" height="140">
+          <circle class="bg" cx="70" cy="70" r="60" />
+          <circle class="progress" cx="70" cy="70" r="60" />
+        </svg>
+        <div class="percentage">0%</div>
+      </div>
+      <div class="skill-name">JavaScript</div>
+      <small>ES6+, animations</small>
+    </div>
+
+    <div class="skill" data-progress="75">
+      <div class="ring">
+        <svg width="140" height="140">
+          <circle class="bg" cx="70" cy="70" r="60" />
+          <circle class="progress" cx="70" cy="70" r="60" />
+        </svg>
+        <div class="percentage">0%</div>
+      </div>
+      <div class="skill-name">React</div>
+      <small>Components & hooks</small>
+    </div>
+
+    <div class="skill" data-progress="70">
+      <div class="ring">
+        <svg width="140" height="140">
+          <circle class="bg" cx="70" cy="70" r="60" />
+          <circle class="progress" cx="70" cy="70" r="60" />
+        </svg>
+        <div class="percentage">0%</div>
+      </div>
+      <div class="skill-name">UI / UX</div>
+      <small>Design systems</small>
+    </div>
+  </div>
+</section>
+
+<script>
+/* =========================
+   ANIMATE ON SCROLL
+========================= */
+const skillsSection = document.getElementById("skills");
+const skills = document.querySelectorAll(".skill");
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        skills.forEach(skill => {
+          const value = skill.dataset.progress;
+          const circle = skill.querySelector(".progress");
+          const text = skill.querySelector(".percentage");
+          const radius = 60;
+          const circumference = 2 * Math.PI * radius;
+
+          circle.style.strokeDasharray = `${(value / 100) * circumference} ${circumference}`;
+          text.textContent = `${value}%`;
+        });
+        observer.disconnect();
+      }
+    });
+  },
+  { threshold: 0.4 }
+);
+
+observer.observe(skillsSection);
+</script>
+
+</body>
+</html>
