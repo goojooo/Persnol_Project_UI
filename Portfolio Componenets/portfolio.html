@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futuristic Portfolio</title>
+<style>
+/* =========================
+   ROOT VARIABLES
+========================= */
+:root {
+  --bg: #f0f2f5;
+  --panel: #ffffff;
+  --accent: #00d0ff;
+  --accent-light: rgba(0,208,255,0.2);
+  --text: #111;
+  --muted: rgba(17,17,17,0.65);
+  --shadow: rgba(0,0,0,0.05);
+  --nav-height: 70px;
+  --transition: all 0.5s ease;
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+a { text-decoration:none; color: inherit; }
+section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+section.visible { opacity:1; transform: translateY(0); }
+
+/* =========================
+   NAVBAR
+========================= */
+nav {
+  position: sticky;
+  top:0;
+  left:0;
+  width:100%;
+  background: var(--panel);
+  height: var(--nav-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 40px;
+  z-index:1000;
+  box-shadow: 0 4px 10px var(--shadow);
+}
+nav .logo { font-weight:700; font-size:1.5rem; color:var(--accent);}
+nav ul { list-style:none; display:flex; gap:30px; }
+nav ul li { cursor:pointer; position: relative; }
+nav ul li::after {
+  content:"";
+  position:absolute;
+  width:0;
+  height:2px;
+  bottom:-5px;
+  left:0;
+  background:var(--accent);
+  transition:0.3s;
+}
+nav ul li:hover::after{ width:100%; }
+
+/* Scroll indicator */
+#scrollIndicator{
+  position:fixed;
+  top:0;
+  left:0;
+  height:4px;
+  background:var(--accent);
+  width:0;
+  z-index:999;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+  position: relative;
+  height: 100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  overflow:hidden;
+  perspective: 1000px;
+}
+.hero h1 {
+  font-size:clamp(3rem,6vw,5rem);
+  margin-bottom:20px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+}
+.hero p { font-size:1.2rem; color:var(--muted); max-width:600px; }
+
+/* =========================
+   SKILLS SECTION
+========================= */
+.skills {
+  padding: clamp(80px,10vw,120px) 20px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:40px;
+}
+.skill-ring{
+  position:relative;
+  width:120px;
+  height:120px;
+  cursor:pointer;
+  transition: transform 0.3s ease;
+}
+.skill-ring:hover { transform: scale(1.1); }
+.skill-ring svg{ transform: rotate(-90deg); }
+.skill-ring circle{
+  fill:none;
+  stroke-width:10;
+  stroke:var(--accent-light);
+  cx:60; cy:60; r:50;
+}
+.skill-ring circle.progress{
+  stroke: var(--accent);
+  stroke-dasharray: 314;
+  stroke-dashoffset: 314;
+  transition: stroke-dashoffset 1.5s ease;
+}
+.skill-ring .label{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  font-size:1rem;
+}
+
+/* =========================
+   STATS SECTION
+========================= */
+.stats{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:60px;
+  padding:60px 20px;
+}
+.stat{
+  text-align:center;
+  cursor:pointer;
+  transition: transform 0.3s ease;
+}
+.stat:hover { transform: scale(1.1); }
+.stat h3{ font-size:2.5rem; margin-bottom:5px; color:var(--accent);}
+.stat p{ color:var(--muted); }
+
+/* =========================
+   TESTIMONIALS SECTION
+========================= */
+.testimonials{
+  padding: clamp(80px,12vw,140px) 20px;
+  text-align:center;
+  position:relative;
+}
+.testimonials h2{ font-size:clamp(2.4rem,5vw,3rem); margin-bottom:40px; }
+.carousel-wrapper{
+  position:relative;
+  max-width:800px;
+  margin:0 auto;
+}
+.carousel{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  position:relative;
+  height:220px;
+}
+.testimonial{
+  flex:0 0 80%;
+  max-width:500px;
+  background:var(--panel);
+  border-radius:20px;
+  padding:30px 20px;
+  box-shadow:0 20px 60px var(--shadow);
+  opacity:0;
+  transform:scale(0.8);
+  transition: all 0.5s ease;
+  position:absolute;
+  left:50%;
+  top:0;
+  transform: translateX(-50%) scale(0.8);
+}
+.testimonial.active{
+  opacity:1;
+  transform: translateX(-50%) scale(1);
+  z-index:2;
+}
+.testimonial p{ font-style:italic; color:var(--muted); margin-bottom:15px; }
+.testimonial h4{ font-weight:700; margin-bottom:3px;}
+.testimonial span{ font-size:0.9rem; color:var(--accent); }
+.carousel-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  width:44px; height:44px;
+  font-size:1.2rem; cursor:pointer;
+  z-index:5;
+  opacity:0.85;
+}
+.carousel-btn:hover{ opacity:1;}
+.prev{ left:-20px; }
+.next{ right:-20px; }
+
+/* =========================
+   CONTACT SECTION
+========================= */
+.contact{
+  position:relative;
+  padding: clamp(80px,12vw,140px) 20px;
+  text-align:center;
+}
+.contact-canvas{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+.contact-form{
+  position:relative;
+  max-width:600px;
+  margin:0 auto;
+  display:grid;
+  gap:20px;
+  background:var(--panel);
+  padding:40px;
+  border-radius:24px;
+  box-shadow:0 30px 70px var(--shadow);
+  z-index:1;
+}
+.contact-form .input-group{ position:relative; }
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  background:transparent;
+  border:2px solid var(--muted);
+  border-radius:12px;
+  padding:18px 16px 6px 16px;
+  font-size:1rem;
+  color:var(--text);
+  outline:none;
+  transition: all 0.3s ease;
+  resize:none;
+}
+.contact-form input:focus,
+.contact-form textarea:focus{
+  border-color: var(--accent);
+}
+.contact-form label{
+  position:absolute;
+  top:18px; left:16px;
+  color:var(--muted);
+  font-size:1rem;
+  pointer-events:none;
+  transition:all 0.3s ease;
+}
+.contact-form input:focus + label,
+.contact-form input:not(:placeholder-shown) + label,
+.contact-form textarea:focus + label,
+.contact-form textarea:not(:placeholder-shown) + label{
+  top:6px; font-size:0.8rem; color:var(--accent);
+}
+.contact-form button{
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+  padding:16px 0;
+  border:none;
+  border-radius:14px;
+  font-size:1.1rem;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition: all 0.3s ease;
+}
+.contact-form button:hover{ opacity:0.9;}
+.success-msg{
+  display:none;
+  text-align:center;
+  margin-top:20px;
+  font-weight:600;
+  color:var(--accent);
+  opacity:0;
+  transition: all 0.5s ease;
+}
+.success-msg.show{
+  display:block;
+  opacity:1;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width:768px){
+  nav{ padding:0 20px; }
+  .testimonial{ flex:0 0 90%; }
+  .carousel-btn{ width:36px; height:36px; font-size:1rem; }
+  .skills { gap:30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Indicator -->
+<div id="scrollIndicator"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">Futurist</div>
+  <ul>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <h1>Hi, I'm Alex</h1>
+  <p>I'm a futuristic web developer crafting interactive & modern web experiences.</p>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="skill-ring">
+    <svg><circle></circle><circle class="progress"></circle></svg>
+    <div class="label">HTML</div>
+  </div>
+  <div class="skill-ring">
+    <svg><circle></circle><circle class="progress"></circle></svg>
+    <div class="label">CSS</div>
+  </div>
+  <div class="skill-ring">
+    <svg><circle></circle><circle class="progress"></circle></svg>
+    <div class="label">JS</div>
+  </div>
+  <div class="skill-ring">
+    <svg><circle></circle><circle class="progress"></circle></svg>
+    <div class="label">React</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" id="stats">
+  <div class="stat"><h3 data-target="5">0</h3><p>Years Experience</p></div>
+  <div class="stat"><h3 data-target="120">0</h3><p>Projects Completed</p></div>
+  <div class="stat"><h3 data-target="50">0</h3><p>Happy Clients</p></div>
+  <div class="stat"><h3 data-target="3000">0</h3><p>Hours Coded</p></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <h2>What Clients Say</h2>
+  <div class="carousel-wrapper">
+    <button class="carousel-btn prev">&#10094;</button>
+    <div class="carousel" id="carousel">
+      <div class="testimonial active">
+        <p>"Amazing work! The project exceeded expectations."</p>
+        <h4>Jane Doe</h4><span>CEO, TechCorp</span>
+      </div>
+      <div class="testimonial">
+        <p>"Highly professional and creative developer."</p>
+        <h4>John Smith</h4><span>Founder, StartUpX</span>
+      </div>
+      <div class="testimonial">
+        <p>"Delivered on time with excellent quality. Truly recommended!"</p>
+        <h4>Mary Johnson</h4><span>Product Manager, WebSolutions</span>
+      </div>
+    </div>
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <canvas class="contact-canvas" id="contactCanvas"></canvas>
+  <h2>Contact Me</h2>
+  <form class="contact-form" id="contactForm">
+    <div class="input-group">
+      <input type="text" id="name" required placeholder=" "><label for="name">Name</label>
+    </div>
+    <div class="input-group">
+      <input type="email" id="email" required placeholder=" "><label for="email">Email</label>
+    </div>
+    <div class="input-group">
+      <textarea id="message" rows="4" required placeholder=" "></textarea><label for="message">Message</label>
+    </div>
+    <button type="submit">Send Message</button>
+    <div class="success-msg" id="successMsg">Message Sent! ✅</div>
+  </form>
+</section>
+
+<script>
+// ================= Scroll Indicator
+const scrollIndicator = document.getElementById("scrollIndicator");
+window.addEventListener("scroll", ()=>{
+  let scrollTop = document.documentElement.scrollTop;
+  let scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  scrollIndicator.style.width = `${(scrollTop/scrollHeight)*100}%`;
+});
+
+// ================= Fade-in on Scroll
+const sections = document.querySelectorAll("section");
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add("visible"); }
+  });
+},{ threshold:0.2 });
+sections.forEach(section=>observer.observe(section));
+
+// ================= SKILLS
+const progressCircles = document.querySelectorAll(".skill-ring .progress");
+const skillPercent = [90,85,75,70];
+progressCircles.forEach((circle,i)=>{
+  const offset = 314 - (314*skillPercent[i])/100;
+  circle.style.strokeDashoffset = offset;
+});
+
+// ================= STATS COUNTERS
+const counters = document.querySelectorAll(".stat h3");
+counters.forEach(counter=>{
+  const update = ()=>{
+    const target = +counter.getAttribute("data-target");
+    let count = +counter.innerText;
+    let increment = target/100;
+    if(count<target){
+      counter.innerText = Math.ceil(count + increment);
+      setTimeout(update,20);
+    } else { counter.innerText = target; }
+  }
+  update();
+});
+
+// ================= TESTIMONIAL CAROUSEL
+const testimonials = document.querySelectorAll(".testimonial");
+let currentTestimonial = 0;
+function showTestimonial(index){
+  testimonials.forEach(t=>t.classList.remove("active"));
+  testimonials[index].classList.add("active");
+}
+document.querySelector(".next").addEventListener("click", ()=>{
+  currentTestimonial = (currentTestimonial +1)%testimonials.length;
+  showTestimonial(currentTestimonial);
+});
+document.querySelector(".prev").addEventListener("click", ()=>{
+  currentTestimonial = (currentTestimonial -1 + testimonials.length)%testimonials.length;
+  showTestimonial(currentTestimonial);
+});
+setInterval(()=>{
+  currentTestimonial = (currentTestimonial +1)%testimonials.length;
+  showTestimonial(currentTestimonial);
+},5000);
+
+// ================= CONTACT FORM
+const form = document.getElementById("contactForm");
+const successMsg = document.getElementById("successMsg");
+form.addEventListener("submit",(e)=>{
+  e.preventDefault();
+  successMsg.classList.remove("show");
+  setTimeout(()=>{ successMsg.classList.add("show"); form.reset(); },300);
+});
+
+// ================= HERO PARALLAX
+const hero = document.querySelector(".hero");
+const heroText = hero.querySelector("h1");
+hero.addEventListener("mousemove",(e)=>{
+  let x = (e.clientX - window.innerWidth/2)/40;
+  let y = (e.clientY - window.innerHeight/2)/40;
+  heroText.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+});
+hero.addEventListener("mouseleave",()=>{ heroText.style.transform = `rotateY(0deg) rotateX(0deg)`; });
+
+// ================= HERO PARTICLES
+const heroCanvas = document.getElementById("heroCanvas");
+const heroCtx = heroCanvas.getContext("2d");
+let heroParticles = [];
+function resizeHero(){ heroCanvas.width=window.innerWidth; heroCanvas.height=window.innerHeight; }
+window.addEventListener("resize",resizeHero);
+resizeHero();
+class HeroParticle{
+  constructor(){
+    this.x=Math.random()*heroCanvas.width;
+    this.y=Math.random()*heroCanvas.height;
+    this.size=Math.random()*3+1;
+    this.speedX=(Math.random()-0.5)*0.5;
+    this.speedY=(Math.random()-0.5)*0.5;
+  }
+  update(){
+    this.x+=this.speedX;
+    this.y+=this.speedY;
+    if(this.x<0||this.x>heroCanvas.width||this.y<0||this.y>heroCanvas.height) this.reset();
+  }
+  reset(){ this.x=Math.random()*heroCanvas.width; this.y=Math.random()*heroCanvas.height; }
+  draw(){ heroCtx.beginPath(); heroCtx.arc(this.x,this.y,this.size,0,Math.PI*2); heroCtx.fillStyle="rgba(0,208,255,0.4)"; heroCtx.fill(); }
+}
+for(let i=0;i<80;i++) heroParticles.push(new HeroParticle());
+function animateHero(){ heroCtx.clearRect(0,0,heroCanvas.width,heroCanvas.height); heroParticles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateHero); }
+animateHero();
+
+// ================= CONTACT PARTICLES
+const contactCanvas = document.getElementById("contactCanvas");
+const contactCtx = contactCanvas.getContext("2d");
+let contactParticles = [];
+function resizeContact(){ contactCanvas.width=contactCanvas.offsetWidth; contactCanvas.height=contactCanvas.offsetHeight; }
+window.addEventListener("resize",resizeContact);
+resizeContact();
+class ContactParticle{
+  constructor(){
+    this.x=Math.random()*contactCanvas.width;
+    this.y=Math.random()*contactCanvas.height;
+    this.size=Math.random()*3+1;
+    this.speedX=(Math.random()-0.5)*0.3;
+    this.speedY=(Math.random()-0.5)*0.3;
+  }
+  update(){
+    this.x+=this.speedX;
+    this.y+=this.speedY;
+    if(this.x<0||this.x>contactCanvas.width||this.y<0||this.y>contactCanvas.height) this.reset();
+  }
+  reset(){ this.x=Math.random()*contactCanvas.width; this.y=Math.random()*contactCanvas.height; }
+  draw(){ contactCtx.beginPath(); contactCtx.arc(this.x,this.y,this.size,0,Math.PI*2); contactCtx.fillStyle="rgba(0,208,255,0.2)"; contactCtx.fill(); }
+}
+for(let i=0;i<50;i++) contactParticles.push(new ContactParticle());
+function animateContact(){ contactCtx.clearRect(0,0,contactCanvas.width,contactCanvas.height); contactParticles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateContact); }
+animateContact();
+</script>
+</body>
+</html>
