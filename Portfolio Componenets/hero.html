@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interactive Hero Section</title>
+
+<style>
+:root {
+  --accent: #7c7cff;
+  --accent2: #00ffd5;
+  --bg-dark: #050509;
+  --glass: rgba(255,255,255,0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: var(--bg-dark);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  padding: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated gradient blobs */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  filter: blur(120px);
+  opacity: 0.6;
+  animation: float 10s infinite alternate;
+}
+
+.hero::before {
+  background: var(--accent);
+  top: -100px;
+  left: -100px;
+}
+
+.hero::after {
+  background: var(--accent2);
+  bottom: -100px;
+  right: -100px;
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  from { transform: translateY(0); }
+  to { transform: translateY(80px); }
+}
+
+/* CONTENT */
+.hero-content {
+  z-index: 2;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  line-height: 1.2;
+}
+
+.hero-content h1 span {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-content p {
+  margin: 25px 0;
+  max-width: 480px;
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+/* CTA */
+.cta {
+  margin-top: 40px;
+  display: inline-block;
+  padding: 16px 38px;
+  font-size: 16px;
+  border-radius: 40px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+/* MAGNETIC */
+.cta span {
+  position: relative;
+  z-index: 2;
+}
+
+/* FLOATING CARDS */
+.hero-visual {
+  position: relative;
+  height: 420px;
+  z-index: 2;
+}
+
+.card {
+  position: absolute;
+  width: 220px;
+  height: 140px;
+  background: var(--glass);
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+  padding: 20px;
+  animation: drift 6s ease-in-out infinite;
+}
+
+.card h3 {
+  font-size: 18px;
+}
+
+.card p {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 6px;
+}
+
+.card.one {
+  top: 0;
+  left: 40px;
+}
+
+.card.two {
+  top: 140px;
+  right: 0;
+  animation-delay: 1s;
+}
+
+.card.three {
+  bottom: 0;
+  left: 120px;
+  animation-delay: 2s;
+}
+
+@keyframes drift {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+  100% { transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 60px 30px;
+    text-align: center;
+  }
+
+  .hero-visual {
+    margin-top: 60px;
+  }
+
+  .hero-content p {
+    margin-inline: auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>
+      Building <span>Modern</span><br>
+      Web Experiences
+    </h1>
+    <p>
+      I design and develop immersive, interactive, and high-performance
+      websites that stand out and convert users.
+    </p>
+
+    <div class="cta" id="cta">
+      <span>View My Work</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="card one">
+      <h3>⚡ Fast</h3>
+      <p>Optimized performance</p>
+    </div>
+    <div class="card two">
+      <h3>🎨 Creative</h3>
+      <p>Unique visual design</p>
+    </div>
+    <div class="card three">
+      <h3>🚀 Scalable</h3>
+      <p>Future-proof code</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const cta = document.getElementById("cta");
+
+cta.addEventListener("mousemove", (e) => {
+  const rect = cta.getBoundingClientRect();
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
+
+  cta.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+});
+
+cta.addEventListener("mouseleave", () => {
+  cta.style.transform = "translate(0,0)";
+});
+</script>
+
+</body>
+</html>
