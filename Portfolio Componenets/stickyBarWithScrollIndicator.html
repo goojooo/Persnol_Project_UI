@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky Navbar with Scroll Indicator</title>
+
+<style>
+:root {
+  --bg: #050509;
+  --panel: rgba(18,18,26,0.75);
+  --accent: #7c7cff;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   SCROLL PROGRESS BAR
+========================= */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #00ffd5);
+  z-index: 9999;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(14px);
+  background: var(--panel);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* LOGO */
+.logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* MOBILE TOGGLE */
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--panel);
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px;
+    display: none;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+/* =========================
+   DEMO SECTIONS (REMOVE LATER)
+========================= */
+section {
+  min-height: 100vh;
+  padding: 120px 20px;
+}
+
+section:nth-child(even) {
+  background: #0b0b12;
+}
+</style>
+</head>
+
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="logo">MyPortfolio</div>
+
+    <div class="menu-toggle" id="menu">☰</div>
+
+    <div class="nav-links" id="links">
+      <a href="#home">Home</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- DEMO CONTENT -->
+<section id="home"><h1>Home</h1></section>
+<section id="skills"><h1>Skills</h1></section>
+<section id="projects"><h1>Projects</h1></section>
+<section id="experience"><h1>Experience</h1></section>
+<section id="contact"><h1>Contact</h1></section>
+
+<script>
+/* =========================
+   SCROLL PROGRESS
+========================= */
+const progress = document.getElementById("progress");
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
+  const height =
+    document.documentElement.scrollHeight - window.innerHeight;
+  const percent = (scrollTop / height) * 100;
+  progress.style.width = percent + "%";
+});
+
+/* =========================
+   ACTIVE LINK HIGHLIGHT
+========================= */
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll(".nav-links a");
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link =>
+          link.classList.toggle(
+            "active",
+            link.getAttribute("href").substring(1) === entry.target.id
+          )
+        );
+      }
+    });
+  },
+  { threshold: 0.6 }
+);
+
+sections.forEach(section => observer.observe(section));
+
+/* =========================
+   MOBILE MENU
+========================= */
+const menu = document.getElementById("menu");
+const links = document.getElementById("links");
+
+menu.addEventListener("click", () => {
+  links.classList.toggle("show");
+});
+
+links.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    links.classList.remove("show");
+  });
+});
+</script>
+
+</body>
+</html>
